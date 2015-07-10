@@ -16,7 +16,7 @@ NOCOLOR=\033[0m
 
 all: install test
 
-install: npm-install .git/hooks/pre-push
+install: npm-install bower-install .git/hooks/pre-push
 
 watch: install
 	echo; \
@@ -111,7 +111,42 @@ npm-install: require-npm
 			echo -e "Checking for missing node packages...${GREEN}OK${NOCOLOR}"; \
 		else \
 			echo -e "    Triggering install...${RED}ERR${NOCOLOR}"; \
-			echo -e "        Could not install. Try 'npm intall' to debug."; \
+			echo -e "        Could not install. Try 'npm install' to debug."; \
+			exit 1; \
+		fi; \
+	else \
+		echo -e "${GREEN}OK${NOCOLOR}"; \
+	fi;
+
+bower-install: npm-install require-node
+	echo -en "Checking for missing bower packages..."; \
+	MISSING_PACKAGES=0; \
+	while read line; \
+	do \
+		if [ ! -d bower_components/$$line ]; \
+		then \
+			if [[ $$MISSING_PACKAGES -eq 0 ]]; \
+			then \
+				echo; \
+			fi; \
+			MISSING_PACKAGES=$$((MISSING_PACKAGES+1)); \
+			echo -e "    Missing $$line"; \
+		fi; \
+	done < <( \
+		cat bower.json | \
+		node_modules/json/lib/json.js "devDependencies" "dependencies" | \
+		node_modules/json/lib/json.js --merge -Ma "key" \
+	); \
+	if [[ $$MISSING_PACKAGES -gt 0 ]]; \
+	then \
+		echo -e "    Triggering install..."; \
+		if bower install 2>&1 | sed "s/^/        /"; \
+		then \
+			echo -e "    Triggering install...${GREEN}OK${NOCOLOR}"; \
+			echo -e "Checking for missing bower packages...${GREEN}OK${NOCOLOR}"; \
+		else \
+			echo -e "    Triggering install...${RED}ERR${NOCOLOR}"; \
+			echo -e "        Could not install. Try 'bower install' to debug."; \
 			exit 1; \
 		fi; \
 	else \
