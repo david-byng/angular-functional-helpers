@@ -361,4 +361,76 @@ describe("byng.module.functional-helpers.functional-helpers", function() {
             expect(ucfirst()(camelCase)).toEqual(pascalCase);
         });
     });
+
+    describe("squirt", function() {
+        var squirt;
+
+        beforeEach(function() {
+            inject(function(_squirt_) {
+                squirt = _squirt_;
+            });
+        });
+
+        it("should be a function", function() {
+            expect(squirt).toEqual(jasmine.any(Function));
+        });
+
+        it("should return the given value when called", function() {
+            var value = {};
+
+            expect(squirt(value)()).toBe(value);
+        });
+    });
+
+    describe("map", function() {
+        var map;
+
+        beforeEach(function() {
+            inject(function(_map_) {
+                map = _map_;
+            });
+        });
+
+        it("should be a function", function() {
+            expect(map).toEqual(jasmine.any(Function));
+        });
+        
+        it("should map the given function on the input array", function() {
+            var value = {};
+            var newValue = {};
+            var func = jasmine.createSpy("func")
+                .and.returnValue(value);
+            var input = [ value ];
+
+            expect(map(func)(input)).toEqual([ newValue ]);
+
+            expect(func).toHaveBeenCalledWith(value, 0, input);
+        });
+    });
+
+    describe("concat", function() {
+        var concat;
+
+        beforeEach(function() {
+            inject(function(_concat_) {
+                concat = _concat_;
+            });
+        });
+
+        it("should be a function", function() {
+            expect(concat).toEqual(jasmine.any(Function));
+        });
+
+        it("should join inputs together into a single array", function() {
+            var inputA = [1,2,3];
+            var inputB = ["a", "b", "c"];
+
+            expect(concat()([inputA, inputB])).toEqual([].concat(inputA).concat(inputB));
+        });
+
+        it("should handle being in a reduce call", function() {
+            var input = [[1,2,3],[4,5,6]];
+            input.reduce(concat());
+        });
+    });
 });

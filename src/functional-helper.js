@@ -302,4 +302,95 @@ angular.module(
             };
         };
     })
+    .factory("squirt", function() {
+        /**
+         * @ngdoc function
+         * @name byng.module.functional-helpers.functional-helpers.squirt
+         * @description
+         * Returns the given values when called
+         *
+         * useful for:
+         *
+         *     $q.when(... some async request here...)
+         *         .catch(...)
+         *         .then(squirt(["alex", "bo", "chris"]))
+         *         .then(... notify them that it succeeded ...)
+         *
+         * @return {Function} which returns the given value when called
+         */
+        return function squirt(value) {
+            return function() {
+                return value;
+            };
+        };
+    })
+    .factory("map", function() {
+        /**
+         * @ngdoc function
+         * @name byng.module.functional-helpers.functional-helpers.map
+         *
+         * @description
+         * Modifies the input with the given function
+         *
+         * useful for:
+         * 
+         *     asyncronouslyFetchUsernames = function() { ... }
+         *     $q.when(asyncronouslyFetchUsernames)
+         *         .then(map(ucfirst()));
+         *
+         *     // ["Alex", "Bo", "Chris"]
+         *
+         * @return {Function} which maps arrays using the given function
+         */
+        return function map(modifier) {
+            return function (array) {
+                return array.map(modifier);
+            };
+        };
+    })
+    .factory("concat", function() {
+        /**
+         * @ngdoc function
+         * @name byng.module.functional-helpers.functional-helpers.concat
+         *
+         * @description
+         * Joins the input into a single array, or wraps if its not an array
+         *
+         * useful for:
+         *
+         *     $q.all([
+         *         fetchFoo(),
+         *         fetchBar()
+         *     ])
+         *         .then(concat());
+         *
+         *     // [ foo1, foo2, bar1, bar2 ]
+         *
+         * or:
+         *
+         *     [ [ 1,2,3 ], [ 4,5,6 ] ]
+         *         .reduce(concat())
+         *     
+         *     // [ 1,2,3,4,5,6 ]
+         *
+         * @return {Function} which returns a single array composed of the values
+         */
+        return function concat(modifier) {
+            modifier = modifier || function(value) { return value; };
+            return function () {
+                var args = [].slice.call(arguments);
+                var inputA = modifier(args[0]);
+                var inputB = [];
+                if (args.length > 1) {
+                    inputB = modifier(args[1]);
+                } else {
+                    inputA = [].concat(inputA)
+                        .reduce(function(a, b) {
+                            return a.concat(b);
+                        }, []);
+                }
+                return [].concat(inputA).concat(inputB);
+            };
+        };
+    })
 ;
