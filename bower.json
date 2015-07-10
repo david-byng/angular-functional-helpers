@@ -1,0 +1,22 @@
+{
+  "name": "angular-functional-helpers",
+  "version": "1.0.0",
+  "homepage": "https://github.com/david-byng/angular-functional-helpers",
+  "authors": [
+    "David Godfrey <david@byng.co>"
+  ],
+  "main": "src/functional-helper.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular": "~1.4.2",
+    "karma-test-helpers": "~0.0.2",
+    "angular-mocks": "~1.4.2"
+  }
+}
