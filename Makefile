@@ -149,12 +149,12 @@ test-karma: install require-node
 	fi;
 
 test-jshint: npm-install require-node
-	echo -en "Testing with jshint..."; \
-	if node_modules/gulp/bin/gulp.js jshint >/dev/null 2>&1; \
+	echo -e "Testing with jshint..."; \
+	if node_modules/gulp/bin/gulp.js jshint | sed "s/^/    /"; \
 	then \
-		echo -e "${GREEN}OK${NOCOLOR}"; \
+		echo -e "Testing with jshint...${GREEN}OK${NOCOLOR}"; \
 	else \
-		echo -e "${RED}ERR${NOCOLOR}"; \
+		echo -e "Testing with jshint...${RED}ERR${NOCOLOR}"; \
 		echo -e "    jshint failed."; \
 		echo -e "    debug with 'gulp jshint'"; \
 		exit 1; \
