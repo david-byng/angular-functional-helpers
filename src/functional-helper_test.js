@@ -3,7 +3,7 @@ describe("byng.module.functional-helpers.functional-helpers", function() {
     var falsy;
 
     beforeEach(function() {
-        module("byng.module.functional-helpers.functional-helpers");
+        module("byng.module.functional-helpers.service.functional-helpers");
 
         truthy = jasmine.createSpy("truthy").and.returnValue(true);
         falsy = jasmine.createSpy("falsy").and.returnValue(false);

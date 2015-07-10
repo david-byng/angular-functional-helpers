@@ -5,7 +5,7 @@
  * Collection of functions to use in functional programming chains
  */
 angular.module(
-    "byng.module.functional-helpers.functional-helpers",
+    "byng.module.functional-helpers.service.functional-helpers",
     [ ]
 )
     .factory("isTruthy", function() {
