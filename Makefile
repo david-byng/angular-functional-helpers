@@ -104,12 +104,13 @@ npm-install: require-npm
 	fi; \
 	if [[ $$MISSING_PACKAGES -gt 0 ]]; \
 	then \
-		echo -en "    Triggering install..."; \
-		if npm install > /dev/null 2>&1; \
+		echo -e "    Triggering install..."; \
+		if npm install 2>&1 | sed "s/^/        /"; \
 		then \
-			echo -e "${GREEN}OK${NOCOLOR}"; \
+			echo -e "    Triggering install...${GREEN}OK${NOCOLOR}"; \
+			echo -e "Checking for missing node packages...${GREEN}OK${NOCOLOR}"; \
 		else \
-			echo -e "${RED}ERR${NOCOLOR}"; \
+			echo -e "    Triggering install...${RED}ERR${NOCOLOR}"; \
 			echo -e "        Could not install. Try 'npm intall' to debug."; \
 			exit 1; \
 		fi; \
