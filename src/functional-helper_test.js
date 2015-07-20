@@ -390,6 +390,48 @@ describe("byng.module.functional-helpers.functional-helpers", function() {
         });
     });
 
+    describe("uppercase", function() {
+        var uppercase;
+
+        beforeEach(function() {
+            inject(function(_uppercase_) {
+                uppercase = _uppercase_;
+            });
+        });
+
+        it("should be a function", function() {
+            expect(uppercase).toEqual(jasmine.any(Function));
+        });
+
+        it("should return a string in uppercase", function() {
+            var camelCase = "fooBar";
+            var ucase = "FOOBAR";
+
+            expect(uppercase()(camelCase)).toEqual(ucase);
+        });
+    });
+
+    describe("lowercase", function() {
+        var lowercase;
+
+        beforeEach(function() {
+            inject(function(_lowercase_) {
+                lowercase = _lowercase_;
+            });
+        });
+
+        it("should be a function", function() {
+            expect(lowercase).toEqual(jasmine.any(Function));
+        });
+
+        it("should return a string in lowercase", function() {
+            var camelCase = "fooBar";
+            var lcase = "foobar";
+
+            expect(lowercase()(camelCase)).toEqual(lcase);
+        });
+    });
+
     describe("squirt", function() {
         var squirt;
 

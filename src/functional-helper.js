@@ -312,6 +312,40 @@ angular.module(
             };
         };
     })
+    .factory("lowercase", function() {
+        /**
+         * @ngdoc function
+         * @name byng.module.functional-helpers.functional-helpers.lowercase
+         * @description
+         * Returns an input string in lowercase.
+         *
+         * @return {Function}
+         */
+        return function(modifier) {
+            modifier = modifier || function(value) { return value; };
+            return function lowercase(input) {
+                input = modifier(input);
+                return input.toLowerCase();
+            };
+        };
+    })
+    .factory("uppercase", function() {
+        /**
+         * @ngdoc function
+         * @name byng.module.functional-helpers.functional-helpers.uppercase
+         * @description
+         * Returns an input string in capitals.
+         *
+         * @return {Function}
+         */
+        return function(modifier) {
+            modifier = modifier || function(value) { return value; };
+            return function uppercase(input) {
+                input = modifier(input);
+                return input.toUpperCase();
+            };
+        };
+    })
     .factory("ucfirst", function() {
         /**
          * @ngdoc function
