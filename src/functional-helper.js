@@ -260,6 +260,33 @@ angular.module(
             };
         };
     })
+    .factory("pipe", function() {
+        /**
+         * @ngdoc service
+         * @name byng.module.functional-helpers.functional-helpers.pipe
+         * @description
+         * runs the commands in order, piping the output of each into the next
+         *
+         * Useful for eg:
+         *
+         *     var people = [ { ... }, { ... } ];
+         *     people.filter(pipe(pluck("name"), not(containedIn(["john"]))))
+         *
+         * @returns {Function} which returns mixed when called
+         */
+        return function pipe() {
+            var callbacks = [].slice.call(arguments);
+            return function(input) {
+                var output = input;
+
+                for (var i = 0; i < callbacks.length; i++ ) {
+                    output = callbacks[i].call(undefined, output);
+                } 
+
+                return output;
+            };
+        };
+    })
     .factory("allOf", function() {
         /**
          * @ngdoc service

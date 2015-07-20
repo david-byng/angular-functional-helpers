@@ -291,6 +291,34 @@ describe("byng.module.functional-helpers.functional-helpers", function() {
         });
     });
 
+    describe("pipe", function() {
+        var pipe;
+
+        beforeEach(function() {
+            inject(function(_pipe_) {
+                pipe = _pipe_;
+            });
+        });
+
+        it("should be a function", function() {
+            expect(pipe).toEqual(jasmine.any(Function));
+        });
+
+        it("should call each method in turn", function() {
+            var methodOne = jasmine.createSpy("methodOne");
+            var methodOneRetval = "foo";
+            var methodTwo = jasmine.createSpy("methodTwo");
+            var methodTwoRetval = "bar";
+            methodOne.and.returnValue(methodOneRetval);
+            methodTwo.and.returnValue(methodTwoRetval);
+            var input = "input";
+
+            expect(pipe(methodOne, methodTwo)(input)).toBe(methodTwoRetval);
+            expect(methodOne).toHaveBeenCalledWith(input);
+            expect(methodTwo).toHaveBeenCalledWith(methodOneRetval);
+        });
+    });
+
     describe("callWith", function() {
         var callWith;
 
